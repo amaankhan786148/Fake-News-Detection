@@ -255,6 +255,29 @@ def clean_text(text: str) -> str:
 # HELPER: Load Saved Models
 # ============================================================
 @st.cache_resource(show_spinner=False)
+# ============================================================
+# AUTO-TRAIN: If model files don't exist (e.g. on cloud),
+# automatically run train_model.py before loading the app.
+# This is needed for Streamlit Cloud deployment.
+# ============================================================
+import subprocess, sys
+
+if not os.path.exists("models/pac_model.pkl"):
+    with st.spinner("⚙️ First-time setup: Training model... please wait ~30 seconds"):
+        subprocess.run([sys.executable, "train_model.py"], check=True)
+    st.rerun()
+
+
+
+
+
+
+
+
+
+
+
+
 def load_models():
     """
     Loads all saved pickle files.
