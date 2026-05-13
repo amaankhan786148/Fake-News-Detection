@@ -2,7 +2,13 @@
 # app.py — Fake News Detection (Cloud-Ready Single File)
 # B.Tech Final Year Major Project
 # ============================================================
+import streamlit as st
 
+st.set_page_config(
+    page_title="Fake News Detection",
+    page_icon="📰",
+    layout="wide"
+)
 import streamlit as st
 import pickle, os, re, string, warnings
 import numpy as np
