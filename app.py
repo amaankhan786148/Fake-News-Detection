@@ -12,6 +12,7 @@ import pickle
 import os
 import re
 import string
+import subprocess, sys
 import numpy as np
 import matplotlib
 matplotlib.use('Agg')
@@ -260,24 +261,6 @@ def clean_text(text: str) -> str:
 # automatically run train_model.py before loading the app.
 # This is needed for Streamlit Cloud deployment.
 # ============================================================
-import subprocess, sys
-
-if not os.path.exists("models/pac_model.pkl"):
-    with st.spinner("⚙️ First-time setup: Training model... please wait ~30 seconds"):
-        subprocess.run([sys.executable, "train_model.py"], check=True)
-    st.rerun()
-
-
-
-
-
-
-
-
-
-
-
-
 def load_models():
     """
     Loads all saved pickle files.
@@ -573,6 +556,11 @@ def main():
     st.markdown(DARK_CSS, unsafe_allow_html=True)
 
     # ── Load Models ──
+    # Auto-train if models folder doesn't exist (for cloud deployment)
+    if not os.path.exists("models/pac_model.pkl"):
+        with st.spinner("⚙️ First-time setup: Training model... please wait ~30 seconds"):
+            subprocess.run([sys.executable, "train_model.py"], check=True)
+        st.rerun()
     models, missing = load_models()
 
     if models is None:
